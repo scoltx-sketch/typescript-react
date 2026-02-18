@@ -2,24 +2,57 @@ version: '3.8'
 
 services:
   currency-converter:
+    image: currency-converter:latest
     build:
       context: .
       dockerfile: Dockerfile
     container_name: currency-converter-app
+    hostname: currency-converter
+    
+    # Port mapping - accessible via TrueNAS IP
     ports:
       - "3000:80"
+    
+    # Environment variables
     environment:
       - NODE_ENV=production
+      - TZ=UTC
+    
+    # Resource limits for TrueNAS stability
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Restart policy for TrueNAS Scale
     restart: unless-stopped
+    
+    # Health check
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/index.html"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
       interval: 30s
       timeout: 3s
       retries: 3
-      start_period: 5s
+      start_period: 10s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Network - TrueNAS default bridge
     networks:
       - currency-network
 
 networks:
   currency-network:
     driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-currency
+
