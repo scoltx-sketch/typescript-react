@@ -81,9 +81,13 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleConvert = () => {
-    if (!exchangeRates || Object.keys(exchangeRates).length === 0) return;
-    
+  // Real-time conversion whenever amount, convertFrom, or convertTo changes
+  useEffect(() => {
+    if (!amount || !exchangeRates || Object.keys(exchangeRates).length === 0) {
+      setResult(null);
+      return;
+    }
+
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount < 0) {
       setResult(null);
@@ -99,12 +103,16 @@ function App() {
     const converted = amountInPHP * toRate;
 
     setResult(parseFloat(converted.toFixed(2)));
+  }, [amount, convertFrom, convertTo, exchangeRates]);
+
+  const handleConvert = () => {
+    // Conversion now happens automatically as you type via useEffect
+    // This button serves as a manual refresh/confirmation button
   };
 
   const handleSwapCurrency = () => {
     setConvertFrom(convertTo);
     setConvertTo(convertFrom);
-    setResult(null);
   };
 
   const toggleFavorite = (code: string) => {
@@ -122,7 +130,6 @@ function App() {
       setConvertTo(newCurrency);
     }
     setShowCurrencySelector(false);
-    setResult(null);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -169,7 +176,6 @@ function App() {
                 value={amount}
                 onChange={(e) => {
                   setAmount(e.target.value);
-                  setResult(null);
                 }}
                 onKeyPress={handleKeyPress}
                 placeholder="Enter amount"
@@ -240,7 +246,7 @@ function App() {
         )}
 
         <button className="convert-btn" onClick={handleConvert} disabled={loading || Object.keys(exchangeRates).length === 0}>
-          {loading ? '⏳ Loading...' : 'Convert'}
+          {loading ? '⏳ Loading...' : '✓ Confirmed'}
         </button>
 
         <div className="exchange-rate-info">

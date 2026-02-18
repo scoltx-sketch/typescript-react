@@ -6,16 +6,20 @@
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
+  padding: 12px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .calculator-container {
   background: white;
-  border-radius: 16px;
-  padding: 40px;
+  border-radius: 12px;
+  padding: 24px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   max-width: 500px;
   width: 100%;
+  overflow-y: auto;
+  max-height: 90vh;
 }
 
 .calculator-container h1 {
@@ -87,7 +91,7 @@
 
 .currency-button {
   width: 100%;
-  padding: 10px 12px;
+  padding: 14px 12px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   background: white;
@@ -97,7 +101,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  font-size: 14px;
+  font-size: 15px;
+  min-height: 48px;
+  touch-action: manipulation;
 }
 
 .currency-button:hover:not(:disabled) {
@@ -162,12 +168,13 @@
   font-size: 24px;
   cursor: pointer;
   color: #999;
-  padding: 0;
-  width: 24px;
-  height: 24px;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
 }
 
 .close-btn:hover {
@@ -229,7 +236,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 36px;
+  min-width: 48px;
+  min-height: 48px;
+  touch-action: manipulation;
 }
 
 .favorite-btn:hover {
@@ -250,12 +259,16 @@
 
 .input-wrapper input {
   width: 100%;
-  padding: 12px 45px 12px 12px;
+  padding: 14px 45px 14px 14px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   font-size: 16px;
   transition: border-color 0.3s;
   background-color: #fafafa;
+  min-height: 48px;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
 }
 
 .input-wrapper input:focus {
@@ -286,9 +299,9 @@
 }
 
 .swap-btn {
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
   padding: 0;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
@@ -301,6 +314,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 0;
+  touch-action: manipulation;
 }
 
 .swap-btn:hover {
@@ -320,7 +334,7 @@
 
 .convert-btn {
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   border: none;
   border-radius: 8px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -330,6 +344,10 @@
   cursor: pointer;
   transition: all 0.3s;
   margin-bottom: 20px;
+  min-height: 48px;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .convert-btn:hover {
@@ -360,34 +378,120 @@
   font-size: 13px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
+  .App {
+    padding: 8px;
+  }
+
   .calculator-container {
-    padding: 24px;
+    padding: 16px;
+    border-radius: 12px;
+    max-height: calc(100vh - 16px);
   }
 
   .calculator-container h1 {
-    font-size: 24px;
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
   }
 
   .input-group {
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+    margin-bottom: 20px;
   }
 
   .swap-btn {
     width: 100%;
-    height: 44px;
+    height: 48px;
+    min-width: 100%;
   }
 
   .currency-section {
     width: 100%;
   }
 
+  .currency-button {
+    padding: 14px 12px;
+    min-height: 48px;
+  }
+
   .currency-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .currency-item {
+    gap: 8px;
+  }
+
+  .currency-option {
+    min-height: 50px;
+    padding: 12px;
+  }
+
+  .favorite-btn {
+    min-width: 48px;
+    min-height: 48px;
   }
 
   .currency-list {
-    max-height: 350px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 100vh;
+    max-width: 100vw;
+    border: none;
+    border-radius: 0;
+    padding: 16px 12px;
+    margin: 0;
+    background: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .currency-grid {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+  }
+
+  .currency-list-header {
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+
+  .currency-list-header h3 {
+    font-size: 15px;
+  }
+
+  .convert-btn {
+    min-height: 48px;
+    padding: 14px;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .exchange-rate-info {
+    padding: 14px;
+    font-size: 12px;
+  }
+
+  .exchange-rate-info p {
+    font-size: 12px;
+  }
+
+  .loading-text,
+  .error-text {
+    font-size: 12px;
+    margin: -8px 0 16px 0;
   }
 }
